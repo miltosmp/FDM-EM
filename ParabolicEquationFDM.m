@@ -72,3 +72,40 @@ figure(2);
 contourf(X, T, u_CN);
 colorbar;
 title("Parabolic Equation Solution with Crank-Nicolson Method")
+
+
+% Dufort-Frankel
+tmax = 1000;
+dx = 0.5;
+dt = 1;
+r = dt/(a*dx^2);
+
+x = 0:dx:L;
+t = 0:dt:tmax;
+
+u_DF = zeros(length(x), length(t));
+u_DF(:, 1) = T0*(sin(pi*x/L).^2);
+
+
+for j = 2:length(t)
+    if j~=2
+        for i = 2:length(x)-1
+            u_DF(i, j) = (1/(1+2*r))*(2*r*(u_DF(i+1, j-1) + u_DF(i-1, j-1)) + ...
+                (1-2*r)*u_DF(i, j-2));
+        end
+    else
+        for i = 2:length(x)-1
+            u_DF(i, j) = r*u_DF(i+1, j-1) + (1-2*r)*u_DF(i, j-1) + ...
+                r*u_DF(i-1, j-1);
+        end
+    end
+end
+
+X = linspace(0, L, length(x));
+T = linspace(0, tmax, length(t));
+[X,T] = meshgrid(X, T);
+
+figure(3);
+contourf(X, T, u_DF');
+colorbar;
+title("Parabolic Equation Solution with Dufort-Frankel Method");
