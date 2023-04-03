@@ -5,6 +5,7 @@ L = 100;
 T0 = 100;
 a = 1;
 
+
 % Euler Method
 tmax = 1000;
 dx = 0.5;
@@ -19,12 +20,8 @@ u_euler(:, 1) = T0*(sin(pi*x/L).^2);
 
 
 for j = 2:length(t)
-    for i = 1:length(x)
-        if (i == 1) || (i == length(x))
-            u_euler(i, j) = 0;
-        else
-            u_euler(i, j) = r*u_euler(i+1, j-1) + (1-2*r)*u_euler(i, j-1) + r*u_euler(i-1, j-1);
-        end
+    for i = 2:length(x)-1
+        u_euler(i, j) = r*u_euler(i+1, j-1) + (1-2*r)*u_euler(i, j-1) + r*u_euler(i-1, j-1);
     end
 end
 
